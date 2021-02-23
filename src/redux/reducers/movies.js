@@ -29,10 +29,10 @@ export const getMoviesList = () => async (dispatch) => {
 
 //Movie thunk
 export const getMovieInfo = (movieId) => async (dispatch) => {
-    debugger;
     const {data} = await getMovie(movieId);
-    return data
+    dispatch(setMovie(data));
 }
+
 
 const moviesReducer = (state = initialState, action) => {
     switch (action.type) {
