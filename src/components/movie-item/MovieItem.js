@@ -9,8 +9,6 @@ export const MovieItem = ({movie}) => {
     const viewMovieInfo = (id) => {
         history.push(`/${id}`);
     };
-
-    console.log(movie);
     return (
         <div style={{width: '30%', border: "black 1px solid"}}>
             <div>

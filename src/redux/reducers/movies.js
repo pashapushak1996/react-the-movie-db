@@ -7,37 +7,33 @@ const {getGenres} = genresService;
 const initialState = {
     movies: [],
     movie: null,
-    isLoading: false
-}
+    isLoading: false,
+    total_pages: null,
+    total_results: null,
+    page: null,
+};
 
-// Movies list action types
+
 const SET_MOVIES = 'SET_MOVIES';
-
-//Movie action type
 const SET_MOVIE = 'SET_MOVIE';
-
-// Loading action type
 const SET_IS_LOADING = 'SET_IS_LOADING';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
 
-
-//Movies list action creators
+const setTotalPages = (payload) => ({type: SET_TOTAL_PAGES, payload});
+export const setCurrentPage = (payload) => ({type: SET_CURRENT_PAGE, payload});
 export const setMovies = (payload) => ({type: SET_MOVIES, payload});
-
-//Movie action creator
 export const setMovie = (payload) => ({type: SET_MOVIE, payload});
-
-//Loading action creator
 export const setIsLoading = (payload) => ({type: SET_IS_LOADING, payload});
 
 //Movies list thunk
-export const getMoviesList = () => async (dispatch) => {
+export const getMoviesList = (page) => async (dispatch) => {
     try {
         dispatch(setIsLoading(true));
-        const request = [await getGenres(), await getMovies()];
+        const request = [await getGenres(), await getMovies(page)];
 
         //method promise all return all promises response;
-
-        let [genres, movies] = await Promise.all(request);
+        const [genres, movies] = await Promise.all(request);
 
         //Merge movies with genres
 
@@ -49,6 +45,8 @@ export const getMoviesList = () => async (dispatch) => {
             }));
             return {...movie, genres: mergedMovieGenre}
         });
+        dispatch(setTotalPages(movies.data.total_pages));
+        dispatch(setCurrentPage(movies.data.page));
         dispatch(setMovies(movieWithGenres));
     } catch (e) {
         console.log(e);
@@ -74,6 +72,16 @@ const moviesReducer = (state = initialState, action) => {
         }
         case SET_IS_LOADING: {
             return {...state, isLoading: action.payload}
+        }
+        case SET_CURRENT_PAGE: {
+            return {
+                ...state, page: action.payload
+            }
+        }
+        case SET_TOTAL_PAGES: {
+            return {
+                ...state, total_pages: action.payload
+            }
         }
         default: {
             return state

@@ -9,3 +9,15 @@ export const getMoviesListFromState = (state) => {
 export const getIsLoadingFromState = (state) => {
     return state.moviesReducer.isLoading;
 };
+
+export const getTotalPageFromState = (state) => {
+    return state.moviesReducer.total_pages;
+};
+
+export const getTotalResultsPageFromState = (state) => {
+    return state.moviesReducer.total_results;
+};
+
+export const getCurrentPageFromState = (state) => {
+    return state.moviesReducer.page;
+};
