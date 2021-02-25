@@ -3,5 +3,9 @@ export const getMovieFromState = (state) => {
 };
 
 export const getMoviesListFromState = (state) => {
-    return state.moviesReducer.movies
+    return state.moviesReducer.movies;
+};
+
+export const getIsLoadingFromState = (state) => {
+    return state.moviesReducer.isLoading;
 };
